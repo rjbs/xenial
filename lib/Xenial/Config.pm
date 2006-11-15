@@ -6,7 +6,7 @@ Xenial::Config - the configuration data for Xenial
 
 =head1 VERSION
 
- $Id: Config.pm,v 1.12 2004/12/20 20:39:52 rjbs Exp $
+ $Id$
 
 =head1 DESCRIPTION
 

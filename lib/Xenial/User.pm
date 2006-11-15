@@ -6,7 +6,7 @@ Xenial::User - a Xenial user
 
 =head1 VERSION
 
- $Id: User.pm,v 1.17 2004/12/07 14:40:47 rjbs Exp $
+ $Id$
 
 =head1 DESCRIPTION
 

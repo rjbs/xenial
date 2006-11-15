@@ -6,7 +6,7 @@ Xenial::DBI - Xenial's subclass of Class::DBI
 
 =head1 VERSION
 
- $Id: DBI.pm,v 1.2 2004/11/19 20:57:11 rjbs Exp $
+ $Id$
 
 =head1 DESCRIPTION
 
