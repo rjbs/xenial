@@ -1,5 +1,5 @@
 ---
 - TimeZone:
     id: 1
-    tz_name: 'GMT'
+    tz_name: 'UTC'
 ...

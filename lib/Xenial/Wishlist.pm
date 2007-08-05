@@ -15,7 +15,7 @@ __PACKAGE__->meta->setup(
     id      => { primary_key => 1, type => 'serial' },
     user_id => { type => 'integer', not_null => 1 },
     brief   => { type => 'varchar', length => 64, not_null => 1 },
-    created_time  => { type => 'datetime', default => q{now} },
+    __PACKAGE__->_created_time_col,
     modified_time => { type => 'datetime', default => q{now} },
   ],
   pk_columns => 'id',

@@ -20,12 +20,14 @@ CREATE TABLE timezones (
 
 CREATE TABLE groups (
   id              integer PRIMARY KEY,
-  brief           varchar(32) NOT NULL UNIQUE
+  brief           varchar(32) NOT NULL UNIQUE,
+  created_time    datetime NOT NULL /* DEFAULT datetime('now') */
 );
 
-CREATE TABLE group_users (
-  user_id         integer NOT NULL REFERENCES users (id),
+CREATE TABLE group_memberships (
   group_id        integer NOT NULL REFERENCES groups (id),
+  user_id         integer NOT NULL REFERENCES users (id),
+  created_time    datetime NOT NULL /* DEFAULT datetime('now') */,
   PRIMARY KEY (user_id, group_id)
 );
 
@@ -33,7 +35,7 @@ CREATE TABLE wishlists (
   id              integer PRIMARY KEY,
   user_id         integer NOT NULL REFERENCES users (id),
   brief           varchar(32) NOT NULL,
-  created_time    datetime NOT NULL,
+  created_time    datetime NOT NULL /* DEFAULT datetime('now') */,
   modified_time   datetime NOT NULL
 );
 
@@ -42,5 +44,5 @@ CREATE TABLE wish (
   wishlist_id     integer NOT NULL REFERENCES wishlists (id),
   brief           varchar(128) NOT NULL,
   cost            decimal(8,2), /* null means unknown */
-  created_time    datetime NOT NULL
+  created_time    datetime NOT NULL /* DEFAULT datetime('now') */
 );

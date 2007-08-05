@@ -11,6 +11,7 @@ __PACKAGE__->use_private_registry;
 __PACKAGE__->register_db(
   driver   => 'sqlite',
   database => 'xenial.db',
+  server_time_zone => 'UTC',
 );
 
 1;

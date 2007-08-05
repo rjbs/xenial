@@ -16,7 +16,7 @@ __PACKAGE__->meta->setup(
     brief => { type => 'varchar', length => '128', not_null => 1 },
     cost  => { type => 'decimal', precision => 8, scale => 2 },
     wishlist_id  => { type => 'integer', not_null => 1 },
-    created_time => { type => 'datetime', default => q{now} },
+    __PACKAGE__->_created_time_col,
   ],
   pk_columns => 'id',
 );

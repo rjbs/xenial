@@ -18,18 +18,25 @@ __PACKAGE__->meta->setup(
     pw_digest => { type => 'varchar', length => 32, not_null => 1 },
     birthday  => { type => 'date', not_null => 1 },
     timezone_id     => { type => 'integer', not_null => 1, default => 1 },
-    created_time    => { type => 'datetime', not_null => 1, default => q{now} },
+    __PACKAGE__->_created_time_col,
     last_login_time => { type => 'datetime' },
     verified_time   => { type => 'datetime' },
   ],
   pk_columns   => [ 'id' ],
   unique_keys  => [ 'username' ],
   foreign_keys => [
-    timezone => {
+    tz => {
       class       => 'Xenial::TimeZone',
       key_columns => { timezone_id => 'id' },
+      rel_type    => 'many to one',
     },
-  ]
+  ],
+  relationships => [
+    groups => {
+      type => 'many to many',
+      map_class => 'Xenial::GroupMembership',
+    },
+  ],
 );
 
 __PACKAGE__->meta->make_manager_class('users');
@@ -40,5 +47,7 @@ sub password {
   require Digest::MD5;
   $self->pw_digest(Digest::MD5::md5_hex($password));
 }
+
+sub tz_name { $_[0]->tz->tz_name }
 
 1;

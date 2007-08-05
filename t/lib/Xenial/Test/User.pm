@@ -4,7 +4,7 @@ use warnings;
 
 use lib 't/lib';
 
-package Xenial::Test::Objects;
+package Xenial::Test::User;
 
 use Digest::MD5 qw(md5_hex);
 use Test::More;
@@ -25,7 +25,7 @@ sub use_modules :Test(startup) {
   use_ok 'Xenial::Wish';
 }
 
-sub create_test_user :Test(6) {
+sub create_test_user :Test(7) {
   my ($self) = @_;
 
   {
@@ -45,17 +45,14 @@ sub create_test_user :Test(6) {
     my $user = Xenial::User->new(id => 1)->load;
 
     isa_ok($user, 'Xenial::User');
-    is(
-      $user->pw_digest,
-      md5_hex('secret'),
-      "password digest is as expected",
-    );
+    is($user->pw_digest, md5_hex('secret'), "password digest is as expected");
 
     isa_ok($user->created_time, 'DateTime', 'created_time');
 
     isa_ok($user->birthday, 'DateTime', 'birthday');
 
-    isa_ok($user->timezone, 'Xenial::TimeZone');
+    isa_ok($user->tz, 'Xenial::TimeZone');
+    is($user->tz_name, 'UTC');
   }
 }
 
