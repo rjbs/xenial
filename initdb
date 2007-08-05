@@ -1,0 +1,7 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+unlink 'xenial.db';
+close STDIN;
+system qw(sqlite3 -init schema.sql xenial.db);
