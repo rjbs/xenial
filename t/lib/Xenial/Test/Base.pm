@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-package Xenial::Base;
+package Xenial::Test::Base;
 
 use Test::Class;
 use Test::More;
@@ -23,6 +23,7 @@ sub init_db {
   my ($self, $arg) = @_;
   $arg ||= {};
 
+  # XXX: Yes, yes, this is ridiculous. -- rjbs, 2007-08-05
   unlink 'xenial.db';
   close STDIN;
   system qw(sqlite3 -init schema.sql xenial.db);
