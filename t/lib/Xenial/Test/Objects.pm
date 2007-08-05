@@ -15,6 +15,7 @@ BEGIN { our @ISA = 'Xenial::Test::Base'; }
 sub init_test_db :Test(startup) {
   my ($self) = @_;
   $self->init_db;
+  $self->load_data('data.yaml');
 }
 
 sub use_modules :Test(startup) {
@@ -24,7 +25,7 @@ sub use_modules :Test(startup) {
   use_ok 'Xenial::Wish';
 }
 
-sub create_test_user :Test(3) {
+sub create_test_user :Test(6) {
   my ($self) = @_;
 
   {
@@ -49,6 +50,12 @@ sub create_test_user :Test(3) {
       md5_hex('secret'),
       "password digest is as expected",
     );
+
+    isa_ok($user->created_time, 'DateTime', 'created_time');
+
+    isa_ok($user->birthday, 'DateTime', 'birthday');
+
+    isa_ok($user->timezone, 'Xenial::TimeZone');
   }
 }
 

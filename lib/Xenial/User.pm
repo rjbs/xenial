@@ -22,8 +22,14 @@ __PACKAGE__->meta->setup(
     last_login_time => { type => 'datetime' },
     verified_time   => { type => 'datetime' },
   ],
-  pk_columns => 'id',
-  unique_key => 'username',
+  pk_columns   => [ 'id' ],
+  unique_keys  => [ 'username' ],
+  foreign_keys => [
+    timezone => {
+      class       => 'Xenial::TimeZone',
+      key_columns => { timezone_id => 'id' },
+    },
+  ]
 );
 
 __PACKAGE__->meta->make_manager_class('users');

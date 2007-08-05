@@ -29,4 +29,24 @@ sub init_db {
   system qw(sqlite3 -init schema.sql xenial.db);
 }
 
+=head2 load_data
+
+=cut
+
+sub load_data {
+  my ($self, $filename) = @_;
+
+  require YAML::Syck;
+
+  my $data = YAML::Syck::LoadFile($filename);
+
+  for my $i (0 .. $#$data) {
+    my ($class, $attr, $other) = %{ $data->[$i] };
+    Carp::croak "too many data for entry $i in $filename" if $other;
+    $class = "Xenial::$class";
+    eval "require $class; 1" or die;
+    $class->new(%$attr)->save;
+  }
+}
+
 1;
