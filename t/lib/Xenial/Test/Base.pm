@@ -23,10 +23,9 @@ sub init_db {
   my ($self, $arg) = @_;
   $arg ||= {};
 
-  # XXX: Yes, yes, this is ridiculous. -- rjbs, 2007-08-05
+  # XXX: Yes, yes, this is horrible and ridiculous. -- rjbs, 2007-08-05
   unlink 'xenial.db';
-  close STDIN;
-  system qw(sqlite3 -init schema.sql xenial.db);
+  `sqlite3 -init schema.sql xenial.db < /dev/null`;
 }
 
 =head2 load_data

@@ -4,6 +4,7 @@ use warnings;
 package Xenial::User;
 
 use Carp ();
+
 use Xenial::DB;
 use Xenial::DB::Object;
 
@@ -35,6 +36,11 @@ __PACKAGE__->meta->setup(
     groups => {
       type => 'many to many',
       map_class => 'Xenial::GroupMembership',
+    },
+    memberships => {
+      type => 'one to many',
+      class => 'Xenial::GroupMembership',
+      key_columns => { id => 'user_id' },
     },
   ],
 );

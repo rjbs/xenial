@@ -10,14 +10,13 @@ use Xenial::DB::Object;
 BEGIN { our @ISA = 'Xenial::DB::Object'; }
 
 __PACKAGE__->meta->setup(
-  table      => 'group_users',
+  table      => 'group_memberships',
   columns    => [
     group_id => { type => 'integer' },
     user_id  => { type => 'integer' },
     __PACKAGE__->_created_time_col,
   ],
   pk_columns   => [ qw(group_id user_id) ],
-  unique_keys  => [ 'username' ],
   foreign_keys => [
     group => {
       class => 'Xenial::Group',

@@ -18,6 +18,11 @@ __PACKAGE__->meta->setup(
   pk_columns => 'id',
   unique_key => 'brief',
   relationships => [
+    memberships => {
+      type => 'one to many',
+      class => 'Xenial::GroupMembership',
+      key_columns => { id => 'group_id' },
+    },
     users => {
       type => 'many to many',
       map_class => 'Xenial::GroupMembership',
