@@ -43,11 +43,11 @@ sub create_user :Test(7) {
 
     $user->save;
 
-    is($user->id, 1, "since we've re-initialized the db, first id must be 1");
+    ok($user->id, "the user got an id value assigned");
   }
 
   {
-    my $user = Xenial::User->new(id => 1)->load;
+    my $user = Xenial::User->new(username => 'rjbs')->load;
 
     isa_ok($user, 'Xenial::User');
     is($user->pw_digest, md5_hex('secret'), "password digest is as expected");
@@ -108,8 +108,8 @@ sub user_groups :Test(7) {
     is(@users, 1, "the group now has a member");
   }
 
-  eval { map { $_->load } $group->memberships({ user_id => 1 }); };
-  like($@, qr/no such/i, "we can't load a group membership for user 1");
+  eval { map { $_->load } $group->memberships({ user_id => 0 }); };
+  like($@, qr/no such/i, "we can't load a group membership for user 0");
 
   my ($membership) = map { $_->load } $group->memberships({ user => $user });
 
