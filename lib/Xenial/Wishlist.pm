@@ -13,13 +13,27 @@ __PACKAGE__->meta->setup(
   table      => 'wishlists',
   columns    => [
     id      => { primary_key => 1, type => 'serial' },
-    user_id => { type => 'integer', not_null => 1 },
+    user_id => { type => 'int', not_null => 1 },
     brief   => { type => 'varchar', length => 64, not_null => 1 },
     __PACKAGE__->_created_time_col,
     modified_time => { type => 'datetime', default => q{now} },
   ],
   pk_columns => 'id',
   unique_key => [ [ qw(user_id brief) ] ],
+  foreign_keys => [
+    user => {
+      class       => 'Xenial::User',
+      key_columns => { user_id => 'id' },
+      rel_type    => 'many to one',
+    },
+  ],
+  relationships => [
+    wishes => {
+      type => 'one to many',
+      class => 'Xenial::Wish',
+      key_columns => { id => 'wishlist_id' },
+    },
+  ],
 );
 
 __PACKAGE__->meta->make_manager_class('wishlists');

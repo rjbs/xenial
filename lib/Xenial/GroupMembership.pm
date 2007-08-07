@@ -12,8 +12,8 @@ BEGIN { our @ISA = 'Xenial::DB::Object'; }
 __PACKAGE__->meta->setup(
   table      => 'group_memberships',
   columns    => [
-    group_id => { type => 'integer' },
-    user_id  => { type => 'integer' },
+    group_id => { type => 'int' },
+    user_id  => { type => 'int' },
     __PACKAGE__->_created_time_col,
   ],
   pk_columns   => [ qw(group_id user_id) ],

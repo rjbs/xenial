@@ -18,7 +18,7 @@ __PACKAGE__->meta->setup(
     realname  => { type => 'varchar', length => 64 },
     pw_digest => { type => 'varchar', length => 32, not_null => 1 },
     birthday  => { type => 'date', not_null => 1 },
-    timezone_id     => { type => 'integer', not_null => 1, default => 1 },
+    timezone_id     => { type => 'int', not_null => 1, default => 1 },
     __PACKAGE__->_created_time_col,
     last_login_time => { type => 'datetime' },
     verified_time   => { type => 'datetime' },
@@ -40,6 +40,11 @@ __PACKAGE__->meta->setup(
     memberships => {
       type => 'one to many',
       class => 'Xenial::GroupMembership',
+      key_columns => { id => 'user_id' },
+    },
+    wishlists => {
+      type => 'one to many',
+      class => 'Xenial::Wishlist',
       key_columns => { id => 'user_id' },
     },
   ],
