@@ -12,10 +12,11 @@ use Xenial::Test::Base;
 
 BEGIN { our @ISA = 'Xenial::Test::Base'; }
 
-sub load_modules :Test(startup => 8) {
+sub load_modules :Test(startup => 9) {
   use_ok 'Xenial::DB';
   use_ok 'Xenial::DB::Object';
 
+  use_ok 'Xenial::Gift';
   use_ok 'Xenial::Group';
   use_ok 'Xenial::GroupMembership';
   use_ok 'Xenial::User';

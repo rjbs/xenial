@@ -12,23 +12,23 @@ __PACKAGE__->meta->setup(
   table      => 'gifts',
   columns    => [
     id      => { primary_key => 1, type => 'serial' },
-    wish_id => { type => 'int', not_null => 1 },
-    user_id => { type => 'int', not_null => 1 },
-    quantity => { type => 'int', not_null => 1, default => 1 },
+    wish_id => { type => 'integer', not_null => 1 },
+    user_id => { type => 'integer', not_null => 1 },
+    quantity => { type => 'integer', not_null => 1, default => 1 },
     comments => { type => 'text' },
     __PACKAGE__->_created_time_col,
   ],
   pk_columns => 'id',
-  unique_key => 'brief',
-  relationships => [
-    memberships => {
-      type => 'one to many',
-      class => 'Xenial::GroupMembership',
-      key_columns => { id => 'group_id' },
+  foreign_keys => [
+    user => {
+      class       => 'Xenial::User',
+      key_columns => { user_id => 'id' },
+      rel_type    => 'many to one',
     },
-    users => {
-      type => 'many to many',
-      map_class => 'Xenial::GroupMembership',
+    wish => {
+      class       => 'Xenial::Wish',
+      key_columns => { wish_id => 'id' },
+      rel_type    => 'many to one',
     },
   ],
 );
