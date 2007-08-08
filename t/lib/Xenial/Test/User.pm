@@ -62,7 +62,38 @@ sub create_user :Test(7) {
   }
 }
 
-sub create_wishlist :Test(1) {
+sub new_user_id {
+  my ($self, %arg) = @_;
+
+  my %param = (
+    username => $self->_random_uname,
+    password => $self->_random_string,
+    birthday => DateTime->from_epoch(
+      epoch     => time - int(rand 365 * 70 * 86400),
+      time_zone => 'UTC',
+    ),
+
+    %arg,
+  );
+
+  my $user = Xenial::User->new(%param)->save;
+  return $user->id;
+}
+
+sub _random_string {
+  return join q{}, map { chr(33 + int rand 89) } 0 .. 11;
+}
+
+my %_seen_uname;
+sub _random_uname {
+  my $uname;
+  until ($uname and not $_seen_uname{$uname}) {
+    $uname = join q{}, map { chr(97 + int rand 26) } 0 .. 7;
+  }
+  return $uname;
+}
+
+sub create_wishlist :Test(3) {
   my ($self) = @_;
 
   my $wishlist = Xenial::Wishlist->new(
@@ -78,20 +109,23 @@ sub create_wishlist :Test(1) {
 
   $wishlist->save;
 
-  ok(1);
+  {
+    my $user = Xenial::User->new(id => 1)->load;
+    isa_ok($user, 'Xenial::User');
+
+    my @wishlists = $user->wishlists;
+    is(@wishlists, 1, 'user 1 now has 1 wishlist');
+
+    my @wishes = map { $_->wishes } @wishlists;
+    is(@wishes, 2, "two total wishes for user");
+  }
 }
 
 sub user_groups :Test(7) {
   my ($self) = @_;
 
-  my $user = Xenial::User->new(
-    username => 'bwooster',
-    password => 'whatho',
-
-    birthday => '1903-05-13',
-  );
-
-  $user->save;
+  my $user_id = $self->new_user_id;
+  my $user = Xenial::User->new(id => $user_id)->load;
 
   {
     my @groups = $user->groups;
@@ -128,8 +162,10 @@ sub user_groups :Test(7) {
     is(@users, 1, "the group now has a member");
   }
 
-  eval { map { $_->load } $group->memberships({ user_id => 0 }); };
-  like($@, qr/no such/i, "we can't load a group membership for user 0");
+  my $new_user_id = $self->new_user_id;
+
+  eval { map { $_->load } $group->memberships({ user_id => $new_user_id }); };
+  like($@, qr/no such/i, "we can't load a group membership for non-member");
 
   my ($membership) = map { $_->load } $group->memberships({ user => $user });
 
