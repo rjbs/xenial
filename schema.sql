@@ -52,6 +52,7 @@ CREATE TABLE wishes (
   id              integer PRIMARY KEY,
   wishlist_id     integer NOT NULL REFERENCES wishlists (id),
   brief           varchar(128) NOT NULL,
+  summary         text,
   unit_cost       decimal(8,2), /* null means unknown */
   quantity        integer NOT NULL default 1,
   created_time    datetime NOT NULL /* DEFAULT datetime('now') */

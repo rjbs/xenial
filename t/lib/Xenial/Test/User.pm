@@ -16,7 +16,7 @@ sub load_modules :Test(startup => 9) {
   use_ok 'Xenial::DB';
   use_ok 'Xenial::DB::Object';
 
-  use_ok 'Xenial::Gift';
+  use_ok 'Xenial::Group';
   use_ok 'Xenial::Group';
   use_ok 'Xenial::GroupMembership';
   use_ok 'Xenial::User';
@@ -60,6 +60,25 @@ sub create_user :Test(7) {
     isa_ok($user->tz, 'Xenial::TimeZone');
     is($user->tz_name, 'UTC');
   }
+}
+
+sub create_wishlist :Test(1) {
+  my ($self) = @_;
+
+  my $wishlist = Xenial::Wishlist->new(
+    brief => 'a few things that I want',
+    user  => { id => 1 },
+  );
+
+  $wishlist->add_wishes(
+    { brief => 'flock of seagulls', unit_cost => 15 },
+    { brief => 'playing card', unit_cost => 0.05, quantity => 52,
+      summary => 'cheap bicycle playing cards are fine; no jokers!', }
+  );
+
+  $wishlist->save;
+
+  ok(1);
 }
 
 sub user_groups :Test(7) {

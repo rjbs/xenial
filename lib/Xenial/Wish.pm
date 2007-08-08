@@ -15,6 +15,7 @@ __PACKAGE__->meta->setup(
     id          => { primary_key => 1, type => 'serial' },
     wishlist_id => { type => 'int', not_null => 1 },
     brief       => { type => 'varchar', length => '128', not_null => 1 },
+    summary     => { type => 'text' },
     unit_cost   => { type => 'decimal', precision => 8, scale => 2 },
     quantity    => { type => 'int', not_null => 1, default => 1 },
     __PACKAGE__->_created_time_col,
