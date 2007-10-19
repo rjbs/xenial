@@ -1,9 +1,9 @@
 
 CREATE TABLE users (
   id              integer PRIMARY KEY,
-  username        varchar(32) NOT NULL UNIQUE,
-  realname        varchar(64) DEFAULT '',
-  pw_digest       varchar(32) NOT NULL,
+  username        varchar(32)  NOT NULL UNIQUE,
+  realname        varchar(64)  DEFAULT '',
+  openid          varchar(256) NOT NULL,
 
   created_time    datetime NOT NULL /* DEFAULT datetime('now') */,
   last_login_time datetime, /* null means invited and not logged in? */
@@ -18,8 +18,8 @@ CREATE TABLE gift (
   wish_id         integer NOT NULL REFERENCES wishes (id),
   user_id         integer NOT NULL REFERENCES users (id),
   quantity        integer NOT NULL default 1,
-  created_time    datetime NOT NULL /* DEFAULT datetime('now') */
-  comments        text,
+  created_time    datetime NOT NULL, /* DEFAULT datetime('now') */
+  comments        text
 );
 
 CREATE TABLE groups (
@@ -40,13 +40,23 @@ CREATE TABLE timezones (
   tz_name         varchar(32) NOT NULL
 );
 
-CREATE TABLE wishlists (
+CREATE TABLE resource (
   id              integer PRIMARY KEY,
-  user_id         integer NOT NULL REFERENCES users (id),
-  brief           varchar(32) NOT NULL,
+  owner_id        integer NOT NULL REFERENCES users (id),
   created_time    datetime NOT NULL /* DEFAULT datetime('now') */,
   modified_time   datetime NOT NULL
 );
+
+CREATE TABLE wishlist_attributes (
+  id              integer PRIMARY KEY REFERENCES resource (id),
+  brief           varchar(32) NOT NULL
+);
+
+CREATE VIEW wishlists AS
+  SELECT r.id, r.owner_id, r.created_time, r.modified_time, wa.brief
+  FROM wishlist_attributes wa
+  JOIN resource r ON wa.id = r.id
+;
 
 CREATE TABLE wishes (
   id              integer PRIMARY KEY,
