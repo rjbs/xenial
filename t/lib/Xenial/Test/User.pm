@@ -98,7 +98,7 @@ sub create_wishlist :Test(3) {
 
   my $wishlist = Xenial::Wishlist->new(
     brief => 'a few things that I want',
-    user  => { id => 1 },
+    owner => { id => 1 },
   );
 
   $wishlist->add_wishes(

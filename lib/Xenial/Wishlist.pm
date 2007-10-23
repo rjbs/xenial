@@ -19,11 +19,11 @@ __PACKAGE__->meta->setup(
     modified_time => { type => 'datetime', default => q{now} },
   ],
   pk_columns => 'id',
-  unique_key => [ [ qw(user_id brief) ] ],
+  unique_key => [ [ qw(owner_id brief) ] ],
   foreign_keys => [
-    user => {
+    owner => {
       class       => 'Xenial::User',
-      key_columns => { user_id => 'id' },
+      key_columns => { owner_id => 'id' },
       rel_type    => 'many to one',
     },
   ],

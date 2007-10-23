@@ -16,6 +16,7 @@ __PACKAGE__->meta->setup(
     id    => { primary_key => 1, type => 'serial' },
     username  => { type => 'varchar', length => 32, not_null => 1 },
     realname  => { type => 'varchar', length => 64 },
+    pw_digest => { type => 'varchar', length => 32, not_null => 1 },
     openid    => { type => 'varchar', length => 255, not_null => 1 },
     birthday  => { type => 'date', not_null => 1 },
     timezone_id     => { type => 'int', not_null => 1, default => 1 },
@@ -45,7 +46,7 @@ __PACKAGE__->meta->setup(
     wishlists => {
       type => 'one to many',
       class => 'Xenial::Wishlist',
-      key_columns => { id => 'user_id' },
+      key_columns => { id => 'owner_id' },
     },
   ],
 );
